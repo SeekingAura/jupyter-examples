@@ -34,3 +34,5 @@ Just access to the next link
 https://nbviewer.org/github/SeekingAura/jupyter-examples/tree/master/
 
 
+## Run at google Colab
+https://githubtocolab.com/SeekingAura/jupyter-examples/blob/master/
