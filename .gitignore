@@ -158,3 +158,17 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+# Environment files
+*.env*
+!.env*-base
+
+# Scrapper
+**/articles
+
+# Keep .gitkeep files
+# To keep an empty directory, add a .gitkeep file to it
+# and ignore the directory with a wildcard:
+#     /path/to/dir/*
+# this will ignore the content but not the director itself.
+!/**/.gitkeep

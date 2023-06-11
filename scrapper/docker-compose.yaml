@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  scrapper:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: "${DOCKER_REGISTRY}scrapper_example"
+    user: "${UID}:${GID}"
+    volumes:
+      - ./articles/:/app/articles
