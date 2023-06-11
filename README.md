@@ -28,7 +28,7 @@ Or copy and paste one of these URLs:
 ```
 
 ## Run at Github
-Navigate into ipynb notebooks on github and will open the saved notebook
+Navigate into ipynb notebooks on github and will open the saved notebook but is only static content
 ## Run at Nbviwer
 Just access to the next link
 https://nbviewer.org/github/SeekingAura/jupyter-examples/tree/master/
