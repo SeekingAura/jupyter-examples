@@ -19,22 +19,27 @@ class TestSerializeContactFromGit(unittest.TestCase):
             subdomain=self.mock.fresh_subdomain,
             freshdesk_token=self.mock.fresh_token,
         )
-        result = freshdesk_cmd.serialize_contact_from_git(
+        result_contact, result_avatar_url = freshdesk_cmd.serialize_contact_from_git(
             user_data=self.mock.github_user,
         )
 
-        self.assertIsInstance(result, dict)
+        self.assertIsInstance(result_contact, dict)
+        self.assertIsInstance(result_avatar_url, str)
 
         self.assertEqual(
-            set(result.keys()),
+            set(result_contact.keys()),
             set(self.mock.fresh_git_contact.keys()),
         )
 
         for key in self.mock.fresh_git_contact:
             self.assertEqual(
-                result.get(key),
+                result_contact.get(key),
                 self.mock.fresh_git_contact.get(key),
             )
+        self.assertEqual(
+            result_avatar_url,
+            self.mock.github_user.get("avatar_url"),
+        )
 
 
 class TestUpdateContact(unittest.TestCase):

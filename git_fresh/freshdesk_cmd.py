@@ -1,6 +1,5 @@
 import json
 import logging
-from io import BytesIO
 
 from _typing import (
     FreshContactCreate,
@@ -26,30 +25,24 @@ class FreshdeskCmd(RequestHttp):
     def serialize_contact_from_git(
         self,
         user_data: GithubUserData,
-    ) -> FreshContactCreateGithub:
+    ) -> tuple[FreshContactCreateGithub, str]:
         contact_keys: dict[str, str] = {
             "name": "name",
             "email": "email",
             "location": "address",
-            "avatar_url": "avatar",
             "bio": "description",
         }
         serialized_contact = dict()
         for git_key, fresh_key in contact_keys.items():
             serialized_contact[fresh_key] = user_data.get(git_key)
 
-        return serialized_contact
+        return serialized_contact, user_data.get("avatar_url", "")
 
     def update_contact(
         self,
         user_id: int,
         contact_data: FreshContactCreate,
     ) -> FreshContactResult:
-        # Download the avatar and load it in memory
-        response_obj = self.http_session.get(url=contact_data.get("avatar"))
-        avatar_data = BytesIO(response_obj.content)
-        files = {"avatar": avatar_data}
-
         url: str = f"https://{self.subdomain}.freshdesk.com/api/v2/contacts/{user_id}"
         headers: dict[str, str] = {
             "Content-Type": "application/json",
@@ -60,8 +53,12 @@ class FreshdeskCmd(RequestHttp):
             json=contact_data,
             auth=(self.freshdesk_token, "X"),
             headers=headers,
-            files=files,
         )
+
+        if response_obj.status_code == 404:
+            raise LookupError(
+                f"User with email {contact_data.get('email')} already exist but is not a contact"
+            )
 
         return json.loads(response_obj.text)
 
@@ -69,11 +66,6 @@ class FreshdeskCmd(RequestHttp):
         self,
         contact_data: FreshContactCreate,
     ) -> FreshContactResult:
-        # Download the avatar and load it in memory
-        response_obj = self.http_session.get(url=contact_data.get("avatar"))
-        avatar_data = BytesIO(response_obj.content)
-        files = {"avatar": avatar_data}
-
         url: str = f"https://{self.subdomain}.freshdesk.com/api/v2/contacts"
         headers: dict[str:str] = {
             "Content-Type": "application/json",
@@ -84,7 +76,6 @@ class FreshdeskCmd(RequestHttp):
             json=contact_data,
             auth=(self.freshdesk_token, "X"),
             headers=headers,
-            files=files,
         )
 
         # Case Duplicate a unique value

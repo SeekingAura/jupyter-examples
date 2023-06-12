@@ -30,7 +30,7 @@ if __name__ == "__main__":
     )
 
     user_data: GithubUserData = github_cmd.get_github_user_data()
-    contact_data: FreshContactCreateGithub = freshdesk_cmd.serialize_contact_from_git(
+    contact_data, avatar_url = freshdesk_cmd.serialize_contact_from_git(
         user_data=user_data,
     )
     _: FreshContactResult = freshdesk_cmd.create_contact(

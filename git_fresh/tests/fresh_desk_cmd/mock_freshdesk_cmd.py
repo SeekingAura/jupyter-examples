@@ -67,7 +67,6 @@ class MockSerializeContactFromGit:
             "name": self.github_user.get("name"),
             "email": self.github_user.get("email"),
             "address": self.github_user.get("location"),
-            "avatar": self.github_user.get("avatar_url"),
             "description": self.github_user.get("bio"),
         }
 
