@@ -3,6 +3,7 @@
   - [Modules](#modules)
   - [Env vars](#env-vars)
 - [Run command](#run-command)
+- [Run tests](#run-tests)
 
 
 # Requirements
@@ -35,4 +36,9 @@ python main.py --help
 To add contact info from github user account from Token run:
 ```bash
 python main.py
+```
+
+# Run tests
+```bash
+python -m tests
 ```
